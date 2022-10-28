@@ -9,10 +9,13 @@ import { initStore } from './store';
 const store = initStore();
 
 ReactDOM.render(
+    // eslint-disable-next-line react/react-in-jsx-scope
     <BrowserRouter>
+        {/* eslint-disable-next-line react/react-in-jsx-scope */}
         <Provider store={store} >
+            {/* eslint-disable-next-line react/react-in-jsx-scope */}
             <Application />
         </Provider>
-    </BrowserRouter>, 
+    </BrowserRouter>,
     document.getElementById('root')
 );

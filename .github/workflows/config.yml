@@ -1,0 +1,59 @@
+name: Conf
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  commit:
+    name: commit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: npm
+      - name: Installing dependencies
+          run: npm ci
+            - name: ESLint checker
+              run: npm run lint:js
+            - name: StyleLint checker
+              run: npm run lint:css
+            - name: Build
+              run:
+                npm run build
+
+  merge:
+    name: merge
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: npm
+      - name: Installing dependencies
+        run: npm ci
+      - name: ESLint checker
+        run: npm run lint:js
+      - name: StyleLint checker
+        run: npm run lint:css
+      - name: Build and validate
+        run:
+          npm run build
+          npm run analyze
+          npm run validator
+      - name: Deploy to Github Pages
+        - run: git config --global user.name "AnimeLore"
+        - run: git config --global user.email "animelorenoreply@gmail.com"
+        - run: git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+        - run: npm run deploy
