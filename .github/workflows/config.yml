@@ -48,7 +48,7 @@ jobs:
         run: |
           npm run build
           npm run analyze
-          npm run validator
+          npm run validate
       - name: Deploy to Github Pages
         run: |
           git config --global user.name "AnimeLore"
