@@ -18,16 +18,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-          cache: npm
       - name: Installing dependencies
-          run: npm ci
-            - name: ESLint checker
-              run: npm run lint:js
-            - name: StyleLint checker
-              run: npm run lint:css
-            - name: Build
-              run:
-                npm run build
+        run: npm ci
+      - name: ESLint checker
+        run: npm run lint:js
+      - name: StyleLint checker
+        run: npm run lint:css
+      - name: Build
+        run: npm run build
 
   merge:
     name: merge
@@ -40,7 +38,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-          cache: npm
       - name: Installing dependencies
         run: npm ci
       - name: ESLint checker
@@ -48,12 +45,13 @@ jobs:
       - name: StyleLint checker
         run: npm run lint:css
       - name: Build and validate
-        run:
+        run: |
           npm run build
           npm run analyze
-          npm run validator
+          npm run validate
       - name: Deploy to Github Pages
-        - run: git config --global user.name "AnimeLore"
-        - run: git config --global user.email "animelorenoreply@gmail.com"
-        - run: git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-        - run: npm run deploy
+        run: |
+          git config --global user.name "AnimeLore"
+          git config --global user.email "animelorenoreply@gmail.com"
+          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          npm run deploy
